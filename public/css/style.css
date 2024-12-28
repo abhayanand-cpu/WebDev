@@ -1,0 +1,89 @@
+
+.navbar{
+    background-color: white;
+    height: 5rem;
+}
+.nav-link{
+    color: black !important;
+}
+.fa-regular{
+    color: #fe424d;
+    font-size: 2rem;
+}
+.f-info{
+    background-color: rgb(240, 240, 240);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.f-info-links,.f-info-social{
+    text-align: center;
+    width: 100%;
+}
+.f-info-links {
+    a{
+        text-decoration: none;
+    }
+    a:hover{
+        text-decoration: underline;
+    }
+}
+
+.listing-card{
+    border:none !important ;
+    margin-bottom: 2rem;
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width:100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+.cards-link{
+    text-decoration: none;
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+/* Create new */
+.add-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* edit */
+.edit-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* show */
+.show-image{
+    height: 45vh;
+}
+
+.delete-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btns{
+    display: flex;
+    gap: 1rem;
+}
