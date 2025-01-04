@@ -11,9 +11,9 @@ const listingSchema = mongoose.Schema({
     },
     image: {
         type:String,
-        default: "https://unsplash.com/photos/a-painting-of-a-snowy-village-with-houses-Jw0vl8gLrxM",
+        default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUSLFIi3NC7K_R1AF-8IC9yo6IpJHM7o8HKQ&s",
         set:(v) =>
-            v === "" ? "https://unsplash.com/photos/a-painting-of-a-snowy-village-with-houses-Jw0vl8gLrxM"
+            v === "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUSLFIi3NC7K_R1AF-8IC9yo6IpJHM7o8HKQ&s"
             : v
         
     },
@@ -31,7 +31,11 @@ const listingSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "review"
         }
-    ]
+    ],
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    }
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
