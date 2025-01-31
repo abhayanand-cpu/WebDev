@@ -40,7 +40,11 @@ module.exports.renderEditForm = async ( req, res ) => {
         req.flash('error','listing does not exist');
         return res.redirect("/listings");
     }
-    res.render("listings/edit.ejs",{ data })
+
+    let originalImage = data.image.url;
+    originalImage = originalImage.replace("/upload", "/upload/w_300/q_30");
+    
+    res.render("listings/edit.ejs",{ data, originalImage })
 };
 
 module.exports.updateListing = async (req, res) => {
@@ -48,7 +52,15 @@ module.exports.updateListing = async (req, res) => {
     if (!req.body.listing) {
         throw new expressError(400, "send valid data for the listing")
     }
-    await listing.findByIdAndUpdate(id, req.body.listing);
+    let data = await listing.findByIdAndUpdate(id, req.body.listing);
+
+    if (typeof req.file !== "undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        data.image = { url, filename };
+        await data.save();
+    }
+
     req.flash('success', 'listing updated!');
 
     res.redirect(`/listings/${id}`);

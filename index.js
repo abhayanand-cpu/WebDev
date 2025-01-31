@@ -10,6 +10,7 @@ const method_override = require('method-override');
 const ejsmate = require('ejs-mate');
 const expressError = require('./utils/expressError.js');
 const session = require('express-session');
+const mongoStore = require('connect-mongo')
 const flash = require('connect-flash');
 const passport = require('passport');
 const Localstrategy = require('passport-local')
@@ -24,10 +25,35 @@ app.set("views",path.join(__dirname,"/views"))
 app.use(express.urlencoded({ extended: true }));
 app.use(method_override("_method"))
 app.engine("ejs", ejsmate);
-app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.static(path.join(__dirname, "/public")));
+
+const MONGO_URL = process.env.ATLAS_DB;
+const port = 8080;
+async function main(){
+    await mongoose.connect(MONGO_URL);
+}
+
+main().then(() => {
+    console.log("database connected");
+}).catch((err) => {
+    console.log(err);
+})
+
+const store = mongoStore.create({
+    mongoUrl: MONGO_URL,
+    crypto: {
+        secret: process.env.SECRET
+    },
+    touchAfter: 24 * 3600
+})
+
+store.on("error", () => {
+    console.log("error in mongo session store",err)
+})
 
 const sessionOptions = {
-    secret: "mysupersecretcode",
+    store,  
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -45,18 +71,6 @@ app.use(passport.session());
 passport.use( new Localstrategy(user.authenticate()) );
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
-
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-const port = 8080;
-async function main(){
-    await mongoose.connect(MONGO_URL);
-}
-
-main().then(() => {
-    console.log("database connected");
-}).catch((err) => {
-    console.log(err);
-})
 
 app.listen(port, () => {
     console.log(`server start at ${port}`);
